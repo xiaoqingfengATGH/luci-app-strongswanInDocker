@@ -2,16 +2,17 @@ local s = require "luci.sys"
 local net = require"luci.model.network".init()
 local ifaces = s.net:devices()
 local m, s, o
-mp = Map("strongswanInDocker", translate("IPSec VPN Server"))
-mp.description = translate(
-                     "IPSec VPN connectivity using the native built-in VPN Client on iOS or Andriod (IKEv1 with PSK and Xauth)")
+mp = Map("strongswanInDocker", translate("IPSec VPN Server(Docker)"))
+mp.description = translate("IPSec VPN connectivity using the native built-in VPN Client on iOS or Andriod (IKEv1 with PSK and Xauth) & Windows 10 (IKEv2)")
 mp.template = "strongswanInDocker/index"
 
 s = mp:section(TypedSection, "service")
 s.anonymous = true
 
 o = s:option(DummyValue, "strongswanInDocker_status", translate("Current Condition"))
+o.default = "正在检测..."
 o.template = "strongswanInDocker/status"
+
 enabled = s:option(Flag, "enabled", translate("Enable"))
 enabled.default = 0
 enabled.rmempty = false
@@ -44,9 +45,10 @@ secret = s:option(Value, "secret", translate("Secret Pre-Shared Key"))
 secret.password = true
 
 ikev2enabled = s:option(Flag, "ikev2enabled", translate("ikev2enabled"),
-		      translate("请在启用前，将路由DDNS域名证书(PEM格式)按路径放好。CA及中间证书保存到/etc/ipsec.d/cacerts中，" ..
-			            "域名证书保存到/etc/ipsec.d/certs并且命名为SERVER.crt，域名证书私钥保存到/etc/ipsec.d/private" ..
-						"并且命名为KEY.key。"))
+		      translate("请在启用前，将路由DDNS域名证书(PEM格式)按路径放好。<br>" ..
+						"CA及中间证书保存到/etc/strongswanInDocker/ipsec.d/cacerts中，<br>" ..
+			            "域名证书保存到/etc/strongswanInDocker/ipsec.d/certs并且命名为SERVER.crt，<br>" ..
+						"域名证书私钥保存到/etc/strongswanInDocker/ipsec.d/private并且命名为KEY.key。"))
 ikev2enabled.default = 0
 ikev2enabled.rmempty = false
 
@@ -124,4 +126,5 @@ function mp.on_save(self)
 end
 
 mp:append(Template("strongswanInDocker/setup"))
+mp:append(Template("strongswanInDocker/download"))
 return mp

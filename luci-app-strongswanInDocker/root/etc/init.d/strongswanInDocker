@@ -22,7 +22,7 @@ setup_login() {
 	config_get password $1 password
 	[ -n "$username" ] || return 0
 	[ -n "$password" ] || return 0
-	local ikev2enabled=$(uci -q get ipsec.@service[0].ikev2enabled)
+	local ikev2enabled=$(uci -q get strongswanInDocker.@service[0].ikev2enabled)
 	if [ "$ikev2enabled" = 1 ]; then
 		echo "$username : EAP '$password'" >> $IPSEC_SECRETS_FILE
 	fi
@@ -30,25 +30,25 @@ setup_login() {
 }
 
 start() {
-	local vt_enabled=$(uci -q get ipsec.@service[0].enabled)
+	local vt_enabled=$(uci -q get strongswanInDocker.@service[0].enabled)
 	[ "$vt_enabled" = 0 ] && return 1
 	
 	prepareConfigFiles
 	
-	local vt_clientip=$(uci -q get ipsec.@service[0].clientip)
+	local vt_clientip=$(uci -q get strongswanInDocker.@service[0].clientip)
 	
-	local vt_clientdns=$(uci -q get ipsec.@service[0].clientdns)
+	local vt_clientdns=$(uci -q get strongswanInDocker.@service[0].clientdns)
 	
 	local lan_ip=$(uci get network.lan.ipaddr)
 	[ -z "$vt_clientdns" ] && local vt_clientdns="8.8.4.4"
 	
-	local vt_secret=$(uci -q get ipsec.@service[0].secret)
+	local vt_secret=$(uci -q get strongswanInDocker.@service[0].secret)
 	
-	local useLanDHCP=$(uci -q get ipsec.@service[0].useLanDHCP)
+	local useLanDHCP=$(uci -q get strongswanInDocker.@service[0].useLanDHCP)
 	
-	local lanDHCPServer=$(uci -q get ipsec.@service[0].lanDHCPServer)
+	local lanDHCPServer=$(uci -q get strongswanInDocker.@service[0].lanDHCPServer)
 	
-	local ikev2enabled=$(uci -q get ipsec.@service[0].ikev2enabled)
+	local ikev2enabled=$(uci -q get strongswanInDocker.@service[0].ikev2enabled)
 	
 	if [ "$useLanDHCP" = 1 ]; then
 		#使用局域网IP
@@ -58,7 +58,7 @@ start() {
 	fi
 	
 	cat > $IPSEC_CONN_FILE <<EOF
-# ipsec.conf - strongSwan IPsec configuration file
+# strongswanInDocker.conf - strongSwan IPsec configuration file
 
 # basic configuration
 
@@ -84,7 +84,7 @@ conn xauth_psk
 EOF
 
 if [ "$ikev2enabled" = 1 ]; then
-	local routerDomain=$(uci -q get ipsec.@service[0].routerDomain)
+	local routerDomain=$(uci -q get strongswanInDocker.@service[0].routerDomain)
 cat >> $IPSEC_CONN_FILE <<EOF
 conn ikev2-eap
 	keyexchange=ikev2
@@ -105,7 +105,7 @@ conn ikev2-eap
 EOF
 fi
 	cat > $IPSEC_SECRETS_FILE <<EOF
-# /etc/ipsec.secrets - strongSwan IPsec secrets file
+# /etc/strongswanInDocker.secrets - strongSwan IPsec secrets file
 : PSK "$vt_secret"
 EOF
 if [ "$ikev2enabled" = 1 ]; then

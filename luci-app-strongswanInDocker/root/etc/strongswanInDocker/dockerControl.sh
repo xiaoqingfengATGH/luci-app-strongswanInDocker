@@ -31,7 +31,7 @@ function isContainerRunning()
 CURRENT_CONTAINERID=""
 function getContainerId()
 {
-	local ww=$(docker ps -q --filter name=^/$DOCKER_CONTAINER_NAME$)
+	local ww=$(docker ps -q -a --filter name=^/$DOCKER_CONTAINER_NAME$)
 	CURRENT_CONTAINERID=$ww;
 }
 

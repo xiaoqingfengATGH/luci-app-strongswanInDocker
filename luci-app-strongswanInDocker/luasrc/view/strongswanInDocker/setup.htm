@@ -16,10 +16,9 @@ return new Za.prototype.init(a,b,c,d,e)}m.Tween=Za,Za.prototype={constructor:Za,
 
 var currentRouterIP = "<%=currentRouterIP%>";
 
-var useLanDHCP = $("#cbid\\.ipsec\\.ipsec\\.useLanDHCP");
-var vpnClientIPSet = $("#cbid\\.ipsec\\.ipsec\\.clientip");
-
-var inputLanDHCPServer = $("#cbid\\.ipsec\\.ipsec\\.lanDHCPServer");
+var useLanDHCP = $("#cbid\\.strongswanInDocker\\.service\\.useLanDHCP");
+var vpnClientIPSet = $("#cbid\\.strongswanInDocker\\.service\\.clientip");
+var inputLanDHCPServer = $("#cbid\\.strongswanInDocker\\.service\\.lanDHCPServer");
 
 function setupUseLanIPStatus(_lanDHCPOption)
 {
@@ -51,7 +50,7 @@ fillinputLanDHCPServer.click(function ()
 	}
 );
 
-var inputClientDNS = $("#cbid\\.ipsec\\.ipsec\\.clientdns");
+var inputClientDNS = $("#cbid\\.strongswanInDocker\\.service\\.clientdns");
 inputClientDNS.after('&nbsp;<input id="ipsec-getLanIP-for-ClientDNS" type="button" class="cbi-button cbi-button-fieldadd" value="填入当前路由IP" size="0">');
 var fillClientDNS = $("#ipsec-getLanIP-for-ClientDNS");
 fillClientDNS.click(function ()
@@ -61,8 +60,8 @@ fillClientDNS.click(function ()
 	}
 );
 
-var enableIKEv2 = $("#cbid\\.ipsec\\.ipsec\\.ikev2enabled");
-var inputRouterDomain = $("#cbid\\.ipsec\\.ipsec\\.routerDomain");
+var enableIKEv2 = $("#cbid\\.strongswanInDocker\\.service\\.ikev2enabled");
+var inputRouterDomain = $("#cbid\\.strongswanInDocker\\.service\\.routerDomain");
 function setupIKEv2Status(_enableIKEv2)
 {
 	if (_enableIKEv2.prop("checked")) {
@@ -78,5 +77,10 @@ enableIKEv2.change(function () {
         setupIKEv2Status($(this));
     });
 setupIKEv2Status(enableIKEv2);
+
+//Hide useless option for docker version
+$("#cbi-strongswanInDocker-service-useLanDHCP").hide();
+//$("#cbi-strongswanInDocker-service-clientip").hide();
+$("#cbi-strongswanInDocker-service-lanDHCPServer").hide();
 //]]>
 </script>

@@ -1,0 +1,103 @@
+<fieldset class="cbi-section" id="cbi-strongswanInDocker-download">
+	<fieldset class="cbi-section-node">
+	<div class="cbi-value" id="strongswanInDocker-download_manager" data-index="1" data-depends="[]">
+		<label class="cbi-value-title">IPSecVPN Server下载器</label>
+		<div class="cbi-value-field">
+			<font class="strongswanInDocker-download_status" id="strongswanInDocker-download_status" style="font-weight:bold;" color="red">未运行</font>
+		</div>
+		<div class="cbi-value-field">
+			&nbsp;&nbsp;<input id="downloadStrongsWanImage" type="button" class="cbi-button cbi-button-link" value="启动下载" size="0">
+		</div>
+	</div>
+	<div class="cbi-value" data-index="2" data-depends="[]">
+		<pre class="strongswanInDocker_download_log_viewer" style="width: 100% ; min-height: 4rem;" wrap="off" readonly="readonly" id="strongswanInDocker_download_log_viewer" rows="50">StrongsWan 镜像尚未加载到Docker，可使用下载器从GitHub中下载。下载前请确认Docker本地镜像库所在磁盘有足够空间(450M)。 
+
+也可以自行使用docker pull xiaoqingfeng999/strongswan:5.8.4从docker中央镜像库下载。
+
+手动导入，访问：https://gitee.com/xiaoqingfeng999/luci-app-strongswanInDocker/tree/dockerImages/dockerImage
+下载xiaoqingfeng999-strongswan-5.8.4.7z，使用7z解压后，得到xiaoqingfeng999-strongswan-5.8.4.tar
+使用 docker load < xiaoqingfeng999-strongswan-5.8.4.tar 加载到Docker镜像库，
+随后 docker tag 481894b7280b xiaoqingfeng999/strongswan:5.8.4 完成标记。</pre>
+	</div>
+	</fieldset>
+</fieldset>
+<script type="text/javascript">//<![CDATA[
+	var lastDownloadState = 0;
+	var canUpdate = false;
+
+	var downloadMgr = $("#cbi-strongswanInDocker-download");
+	var msg = $('#strongswanInDocker_download_log_viewer');
+	var downloadMsg = msg.html();
+	
+	function refreshDownloadMsg()
+	{
+		msg.html(downloadMsg);
+		msg.scrollTop(msg[0].scrollHeight);
+	}
+
+	XHR.poll(2, '<%=luci.dispatcher.build_url("admin", "vpn", "strongswanInDocker", "downloadStatus")%>', null,
+		function(x, result)
+		{
+			if(result.imageState==1)
+			{
+				if(!downloadMgr.is(':visible')) downloadMgr.show();
+			}
+			else
+			{
+				if(downloadMgr.is(':visible')) downloadMgr.hide();
+			}
+			
+			if (result.imageState != 1)
+			{
+				downloadMsg = "StrongsWan 镜像已经加载到Docker，无需下载。"
+			}
+			
+			if(canUpdate)
+			{
+				downloadMsg = result.downloadMsg;
+			}
+			
+			if(result.status != lastDownloadState)
+			{
+				if(result.status == 1)
+				{
+					canUpdate = true;
+				}
+				else
+				{
+					canUpdate = false;
+				}
+				lastDownloadState = result.status;
+			}
+
+			var status = document.getElementsByClassName('strongswanInDocker-download_status')[0];
+			status.setAttribute("style","font-weight:bold;");
+			status.setAttribute("color",result.status!=0 ? "green":"gold");
+			switch(result.status) {
+			 case 0:
+				status.innerHTML = '<%=translate("Download not start")%>'
+				$('input#downloadStrongsWanImage').attr("disabled",false);
+				break;
+			 default:
+				status.innerHTML = '<%=translate("Downloading")%>'
+				$('input#downloadStrongsWanImage').attr("disabled",true);
+			}
+			
+			refreshDownloadMsg();
+		}
+	)
+	
+	$('input#downloadStrongsWanImage').click(function(){
+		if(lastDownloadState==0)
+		{
+			$.get("<%=luci.dispatcher.build_url("admin", "vpn", "strongswanInDocker", "startDownload")%>",function(data,status){
+				console.log("Start download return:" + data.status);
+			});
+			$("#strongswanInDocker-download_status").html("启动中...");
+			$(this).attr("disabled",true);
+			$(this).blur();
+		}
+	});
+	
+//]]>
+</script>

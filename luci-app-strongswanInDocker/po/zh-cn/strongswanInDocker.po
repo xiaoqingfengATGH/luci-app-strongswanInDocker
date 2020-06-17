@@ -1,7 +1,7 @@
-msgid "IPSec VPN Server"
-msgstr "IPSecVPN服务器(Docker)"
+msgid "IPSec VPN Server(Docker)"
+msgstr "IPSecVPN(Docker)"
 
-msgid "IPSec VPN connectivity using the native built-in VPN Client on iOS or Andriod (IKEv1 with PSK and Xauth)"
+msgid "IPSec VPN connectivity using the native built-in VPN Client on iOS or Andriod (IKEv1 with PSK and Xauth) & Windows 10 (IKEv2)"
 msgstr "支持iOS 或者 Andriod (IKEv1 with PSK and Xauth) 原生内置 IPSec VPN 客户端进行连接。设置证书后，支持 Windows 10 (IKEv2 with Mschapv2) 接入。（IPSec服务器以Docker容器运行）"
 
 msgid "IPSec VPN Server status"
@@ -66,3 +66,9 @@ msgstr "当前路由域名"
 
 msgid "Users Manager"
 msgstr "接入用户管理"
+
+msgid "Download not start"
+msgstr "未启动"
+
+msgid "Downloading"
+msgstr "正在下载"
