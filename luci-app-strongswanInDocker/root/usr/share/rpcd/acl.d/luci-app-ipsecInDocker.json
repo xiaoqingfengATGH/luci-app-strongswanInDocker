@@ -1,0 +1,11 @@
+{
+	"luci-app-strongswanInDocker": {
+		"description": "Grant UCI access for luci-app-strongswanInDocker",
+		"read": {
+			"uci": [ "strongswanInDocker" ]
+		},
+		"write": {
+			"uci": [ "strongswanInDocker" ]
+		}
+	}
+}

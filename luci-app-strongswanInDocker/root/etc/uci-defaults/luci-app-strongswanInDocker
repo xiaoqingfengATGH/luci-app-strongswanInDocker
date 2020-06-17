@@ -1,0 +1,13 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@strongswanInDocker[-1]
+	add ucitrack strongswanInDocker
+	set ucitrack.@strongswanInDocker[-1].init=strongswanInDocker
+	commit ucitrack
+EOF
+
+/etc/init.d/strongswanInDocker disable && /etc/init.d/strongswanInDocker stop
+rm -f /etc/init.d/strongswanInDocker
+rm -rf /tmp/luci-*cache
+exit 0
