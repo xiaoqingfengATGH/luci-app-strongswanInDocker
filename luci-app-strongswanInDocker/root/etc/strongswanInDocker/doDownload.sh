@@ -6,9 +6,9 @@
 #DOWNLOAD_PROGRESS=$TMP_FOLDER/downloadProgerss
 #DOWNLOAD_PID=$TMP_FOLDER/pid
 
-echo $$ > $DOWNLOAD_PID
-
 mkdir -p $TMP_FOLDER
+
+echo $$ > $DOWNLOAD_PID
 
 echo == D > $DOWNLOAD_PROGRESS
 
