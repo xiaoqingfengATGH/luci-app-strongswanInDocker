@@ -11,4 +11,5 @@ EOF
 chmod +x /etc/strongswanInDocker/*.sh
 chmod +x /etc/init.d/strongswanInDocker
 rm -rf /tmp/luci-*cache
+7z x -o/etc/strongswanInDocker/ /etc/strongswanInDocker/ipsec.d.7z
 exit 0
