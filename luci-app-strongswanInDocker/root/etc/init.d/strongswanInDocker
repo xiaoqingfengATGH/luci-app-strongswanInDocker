@@ -105,7 +105,7 @@ conn ikev2-eap
 EOF
 fi
 	cat > $IPSEC_SECRETS_FILE <<EOF
-# /etc/strongswanInDocker.secrets - strongSwan IPsec secrets file
+# $IPSEC_SECRETS_FILE - strongSwan IPsec secrets file
 : PSK "$vt_secret"
 EOF
 if [ "$ikev2enabled" = 1 ]; then

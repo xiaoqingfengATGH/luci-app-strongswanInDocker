@@ -1,4 +1,4 @@
-mp = Map("ipsec", translate("IPSec VPN Server(Docker)"))
+mp = Map("strongswanInDocker", translate("IPSec VPN Server(Docker)"))
 mp.description = translate("IPSec VPN connectivity using the native built-in VPN Client on iOS or Andriod (IKEv1 with PSK and Xauth) & Windows 10 (IKEv2)")
 
 s = mp:section(TypedSection, "users", translate("Users Manager"))
