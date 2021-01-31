@@ -6,11 +6,11 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI for IPSec VPN Server In Docker
-LUCI_DEPENDS:=+docker-ce +p7zip
+LUCI_DEPENDS:=+dockerd +docker +p7zip
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-strongswanInDocker
 PKG_VERSION:=1.02
-PKG_RELEASE:=1-20200625
+PKG_RELEASE:=1-20210131
 PKG_MAINTAINER:=Richard Yu <xiaoqingfengatgm@gmail.com>
 
 include $(TOPDIR)/feeds/luci/luci.mk
